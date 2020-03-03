@@ -3,7 +3,11 @@ package userUpdateExercise
 import Either
 import Failure
 import Success
+import flatMap
+import map
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import kotlin.system.exitProcess
 
 const val DATE_PARSE_ERROR = "Could not parse date"
 
@@ -25,33 +29,34 @@ fun main() {
         print("Enter action: ")
         val action = readLine()
 
-        when {
-            action == "addUser" -> {
+        when (action) {
+            "addUser" -> {
                 print("Enter username: ")
-                val username = readLine()
+                val username = readLine()!!
                 print("Enter birthdate (yyyy-MM-DD): ")
-                val encodedBirthDate = readLine()
+                val encodedBirthDate = readLine()!!
 
-                if (username != null && encodedBirthDate != null) {
-                    when (val insertResult = userLogic.addUser(username, encodedBirthDate)) {
-                        is Success -> println("Success!")
-                        is Failure -> println(insertResult.value)
-                    }
-                } else {
-                    println("Must enter username and birthdate")
+                when (val insertResult = userLogic.addUser(username, encodedBirthDate)) {
+                    is Success -> println("Success!")
+                    is Failure -> println(insertResult.value)
                 }
             }
-            action == "getUser" -> {
+            "getUserAge" -> {
                 print("Enter username: ")
-                val username = readLine()
-                username?.let {
-                    when (val userBirthday = userLogic.getUserAge(username)) {
-                        is Success -> println(userBirthday.value)
-                        is Failure -> println(userBirthday.value)
-                    }
-                } ?: println("Must enter username")
+                val username = readLine()!!
+                when (val userBirthday = userLogic.getUserAge(username)) {
+                    is Success -> println("$username is ${userBirthday.value} years old")
+                    is Failure -> println(userBirthday.value)
+                }
+            }
+            "exit" -> {
+                exitProcess(0)
+            }
+            else -> {
+                println("unrecognized action")
             }
         }
+        println()
     }
 
 }

@@ -14,7 +14,7 @@ object UserDaoSpec : Spek({
         it("insert and retrieve user") {
             val userDao = UserDao()
             val username = "testuser"
-            val newUser = User(username, LocalDate.from(Instant.now().minus(10L, ChronoUnit.YEARS)))
+            val newUser = User(username, LocalDate.now().minusYears(10L))
             val insertUserResult = userDao.insertUser(newUser)
             assertEquals(Success(Unit), insertUserResult)
 
@@ -29,7 +29,7 @@ object UserDaoSpec : Spek({
         it("insert user with username already in use") {
             val userDao = UserDao()
             val username = "testuser"
-            val newUser = User(username, LocalDate.from(Instant.now().minus(10L, ChronoUnit.YEARS)))
+            val newUser = User(username, LocalDate.now().minusYears(10L))
             userDao.insertUser(newUser)
 
             val insertResult = userDao.insertUser(newUser)

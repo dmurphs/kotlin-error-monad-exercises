@@ -1,6 +1,8 @@
 package userUpdateExercise
 
 import Either
+import Failure
+import Success
 import java.time.LocalDate
 
 data class User(
